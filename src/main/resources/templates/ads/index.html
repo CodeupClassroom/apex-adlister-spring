@@ -5,12 +5,15 @@
     <title>All Ads</title>
 </head>
 <body>
-    <div th:if="${noAdsFound}">
-        No ads were found.
-    </div>
-    <div th:each="ad : ${ads}">
-        <h3 th:text="${ad.title}">Title</h3>
-        <div th:text="${ad.description}">Description</div>
+    <nav th:replace="fragments/navbar :: navbar" />
+    <div class="container">
+        <div th:if="${noAdsFound}">
+            No ads were found.
+        </div>
+        <div th:each="ad : ${ads}">
+            <h3 th:text="${ad.title}">Title</h3>
+            <div th:text="${ad.description}">Description</div>
+        </div>
     </div>
 </body>
 </html>
