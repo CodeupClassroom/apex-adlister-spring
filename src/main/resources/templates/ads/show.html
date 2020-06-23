@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Adlister | View Ad')">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar" />
+<div class="container">
+    <div th:if="${ad == null}">
+        Ad not found.
+    </div>
+    <div th:if="${ad}">
+        <div th:text="${adId}">ID</div>
+        <h3 th:text="${ad.title}">Title</h3>
+        <div th:text="${ad.description}">Description</div>
+    </div>
+</div>
+</body>
+</html>
