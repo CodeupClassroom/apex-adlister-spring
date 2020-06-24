@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AdsRepository extends JpaRepository<Ad, Long> {
     // HQL
-    @Query("from Ad as a where a.title like %:term%")
+    @Query("from Ad as a where a.title like %:term% or a.description like %:term%")
     List<Ad> searchByTitle(@Param("term") String term);
 
 }
