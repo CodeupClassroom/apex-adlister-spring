@@ -14,6 +14,10 @@
         <input type="text" name="description" id="description" th:value="${ad.description}">
         <button>Save changes</button>
     </form>
+
+    <form th:action="${'/ads/' + ad.id + '/delete'}" method="post">
+        <button class="btn btn-danger">Delete</button>
+    </form>
 </div>
 </body>
 </html>

@@ -73,7 +73,7 @@ public class AdsController {
         return "ad updated";
     }
 
-    @DeleteMapping("/ads/{id}/delete")
+    @PostMapping("/ads/{id}/delete")
     @ResponseBody
     public String destroy(@PathVariable long id){
         adsDao.deleteById(id);
