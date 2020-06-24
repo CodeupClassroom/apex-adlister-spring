@@ -12,4 +12,6 @@ public interface AdsRepository extends JpaRepository<Ad, Long> {
     @Query("from Ad as a where a.title like %:term% or a.description like %:term%")
     List<Ad> searchByTitle(@Param("term") String term);
 
+    // query methods
+    Ad findFirstByTitle(String title); // select * from ads where title = ? limit 1
 }

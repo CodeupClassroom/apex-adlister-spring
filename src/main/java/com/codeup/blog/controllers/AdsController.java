@@ -22,6 +22,10 @@ public class AdsController {
     @GetMapping("/ads")
 //    @RequestMapping(value = "/ads", method = RequestMethod.GET)
     public String index(Model model){
+        
+        Ad firstAd = adsDao.findFirstByTitle("psvita");
+        System.out.println("firstAd.getId() = " + firstAd.getId());
+        
         List<Ad> adsList = adsDao.findAll();
         model.addAttribute("noAdsFound", adsList.size() == 0);
         model.addAttribute("ads", adsList);
