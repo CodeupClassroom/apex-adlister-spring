@@ -50,6 +50,14 @@ public class AdsController {
         return "create a new ad";
     }
 
+    @GetMapping("/ads/{id}/edit")
+    public String showEditForm(Model model, @PathVariable long id){
+        // find an ad
+        Ad adToEdit = adsDao.getOne(id);
+        model.addAttribute("ad", adToEdit);
+        return "ads/edit";
+    }
+
     @PutMapping("/ads/{id}/edit")
     @ResponseBody
     public String update(@PathVariable long id){
