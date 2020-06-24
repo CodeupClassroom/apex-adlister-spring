@@ -80,5 +80,12 @@ public class AdsController {
         return "ad deleted";
     }
 
+    @GetMapping("/search")
+    public String searchResults(Model model, @RequestParam(name = "term") String term){
+        List<Ad> ads = adsDao.searchByTitle(term);
+        model.addAttribute("ads", ads);
+        return "ads/index";
+    }
+
 
 }
