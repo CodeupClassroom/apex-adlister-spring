@@ -58,14 +58,16 @@ public class AdsController {
         return "ads/edit";
     }
 
-    @PutMapping("/ads/{id}/edit")
+    @PostMapping("/ads/{id}/edit")
     @ResponseBody
-    public String update(@PathVariable long id){
+    public String update(@PathVariable long id,
+                         @RequestParam(name = "title") String title,
+                         @RequestParam(name = "description") String desc){
         // find an ad
         Ad foundAd = adsDao.getOne(id); // select * from ads where id = ?
         // edit the ad
-        foundAd.setTitle("XBOX Series X");
-        foundAd.setDescription("holiday");
+        foundAd.setTitle(title);
+        foundAd.setDescription(desc);
         // save the changes
         adsDao.save(foundAd); // update ads set title = ? where id = ?
         return "ad updated";
