@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class AdsController {
@@ -56,7 +54,7 @@ public class AdsController {
     public String save()
     {
         User currentUser = usersDao.getOne(1L);
-        Ad newAd = new Ad("XBOX X","brand new", currentUser);
+        Ad newAd = new Ad("XBOX X","brand new", currentUser, null);
         adsDao.save(newAd);
         return "create a new ad";
     }
