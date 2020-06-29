@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Adlister | View Ad')">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar" />
+<div class="container">
+    <form th:action="${'/ads/' + ad.id + '/edit'}" th:method="POST">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" th:value="${ad.title}">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" th:value="${ad.description}">
+        <button>Save changes</button>
+    </form>
+
+    <form th:action="${'/ads/' + ad.id + '/delete'}" method="post">
+        <button class="btn btn-danger">Delete</button>
+    </form>
+</div>
+</body>
+</html>
