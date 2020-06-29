@@ -14,6 +14,7 @@
         <div th:text="${adId}">ID</div>
         <h3 th:text="${ad.title}">Title</h3>
         <div th:text="${ad.description}">Description</div>
+        <div>Created by <span th:text="${ad.owner.username}"></span></div>
     </div>
 </div>
 </body>
