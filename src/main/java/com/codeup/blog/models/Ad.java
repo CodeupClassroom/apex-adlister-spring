@@ -25,24 +25,34 @@ public class Ad {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
     private List<AdImage> images;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name="ads_categories",
+            joinColumns = {@JoinColumn(name = "ad_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private List<AdCategory> categories;
+
     // spring framework uses this empty constructor
     public Ad() {}
 
     // insert
-    public Ad(String title, String description, User user, List<AdImage> images) {
+    public Ad(String title, String description, User user, List<AdImage> images, List<AdCategory> categories) {
         this.title = title;
         this.description = description;
         this.owner = user;
         this.images = images;
+        this.categories = categories;
     }
 
     // read
-    public Ad(long id, String title, String description, User user, List<AdImage> images) {
+    public Ad(long id, String title, String description, User user, List<AdImage> images, List<AdCategory> categories) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.owner = user;
         this.images = images;
+        this.categories = categories;
     }
 
     public String getDescription() {
@@ -83,5 +93,13 @@ public class Ad {
 
     public void setImages(List<AdImage> images) {
         this.images = images;
+    }
+
+    public List<AdCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<AdCategory> categories) {
+        this.categories = categories;
     }
 }
