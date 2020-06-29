@@ -4,7 +4,7 @@ package com.codeup.blog.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ad_image")
+@Table(name = "ad_images")
 public class AdImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
