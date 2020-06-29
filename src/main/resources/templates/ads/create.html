@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Adlister | View Ad')">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar" />
+<div class="container">
+    <form action="/ads/create" method="post">
+        Title:
+        <input name="title" />
+        <br />
+        Description:
+        <input name="description" />
+        <br />
+        <input type="submit" />
+    </form>
+</div>
+</body>
+</html>

@@ -44,19 +44,20 @@ public class AdsController {
     }
 
     @GetMapping("/ads/create")
-    @ResponseBody
     public String showForm(){
-        return "view the form for creating an ad";
+        return "ads/create";
     }
 
     @PostMapping("/ads/create")
-    @ResponseBody
-    public String save()
+    public String save(
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "description") String description
+    )
     {
         User currentUser = usersDao.getOne(1L);
-        Ad newAd = new Ad("XBOX X","brand new", currentUser, null, null);
-        adsDao.save(newAd);
-        return "create a new ad";
+        Ad newAd = new Ad(title, description, currentUser, null, null);
+        Ad savedAd = adsDao.save(newAd);
+        return "redirect:/ads/" + savedAd.getId();
     }
 
     @GetMapping("/ads/{id}/edit")
