@@ -2,6 +2,7 @@ package com.codeup.blog.controllers;
 
 import com.codeup.blog.daos.AdsRepository;
 import com.codeup.blog.models.Ad;
+import com.codeup.blog.models.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class AdsController {
     @GetMapping("/ads/{id}")
     public String show(@PathVariable long id, Model model){
         model.addAttribute("adId", id);
-        model.addAttribute("ad", new Ad("PS1", "Used"));
+        model.addAttribute("ad", new Ad("PS1", "Used", null));
         return "/ads/show";
     }
 
@@ -49,7 +50,7 @@ public class AdsController {
     @ResponseBody
     public String save()
     {
-        Ad newAd = new Ad("XBOX X","brand new");
+        Ad newAd = new Ad("XBOX X","brand new", null);
         adsDao.save(newAd);
         return "create a new ad";
     }

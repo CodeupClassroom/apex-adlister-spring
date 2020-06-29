@@ -18,20 +18,25 @@ public class Ad {
     @Column(nullable = false)
     private String description;
 
+    @OneToOne
+    private User owner;
+
     // spring framework uses this empty constructor
     public Ad() {}
 
     // insert
-    public Ad(String title, String description) {
+    public Ad(String title, String description, User user) {
         this.title = title;
         this.description = description;
+        this.owner = user;
     }
 
     // read
-    public Ad(long id, String title, String description) {
+    public Ad(long id, String title, String description, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.owner = user;
     }
 
     public String getDescription() {
@@ -56,5 +61,13 @@ public class Ad {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }
