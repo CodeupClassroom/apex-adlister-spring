@@ -44,7 +44,8 @@ public class AdsController {
     }
 
     @GetMapping("/ads/create")
-    public String showForm(){
+    public String showForm(Model viewModel){
+        viewModel.addAttribute("ad", new Ad());
         return "ads/create";
     }
 
