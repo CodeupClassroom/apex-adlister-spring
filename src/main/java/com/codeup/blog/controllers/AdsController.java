@@ -66,18 +66,12 @@ public class AdsController {
     }
 
     @PostMapping("/ads/{id}/edit")
-    @ResponseBody
-    public String update(@PathVariable long id,
-                         @RequestParam(name = "title") String title,
-                         @RequestParam(name = "description") String desc){
-        // find an ad
-        Ad foundAd = adsDao.getOne(id); // select * from ads where id = ?
-        // edit the ad
-        foundAd.setTitle(title);
-        foundAd.setDescription(desc);
+    public String update(@ModelAttribute Ad adtoEdit){
+        User currentUser = usersDao.getOne(1L);
+        adtoEdit.setOwner(currentUser);
         // save the changes
-        adsDao.save(foundAd); // update ads set title = ? where id = ?
-        return "ad updated";
+        adsDao.save(adtoEdit); // update ads set title = ? where id = ?
+        return "redirect:/ads/" + adtoEdit.getId();
     }
 
     @PostMapping("/ads/{id}/delete")
