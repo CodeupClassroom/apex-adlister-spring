@@ -50,14 +50,10 @@ public class AdsController {
     }
 
     @PostMapping("/ads/create")
-    public String save(
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "description") String description
-    )
-    {
+    public String save(@ModelAttribute Ad adToBeSaved) {
         User currentUser = usersDao.getOne(1L);
-        Ad newAd = new Ad(title, description, currentUser, null, null);
-        Ad savedAd = adsDao.save(newAd);
+        adToBeSaved.setOwner(currentUser);
+        Ad savedAd = adsDao.save(adToBeSaved);
         return "redirect:/ads/" + savedAd.getId();
     }
 
