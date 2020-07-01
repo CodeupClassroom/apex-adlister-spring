@@ -4,6 +4,8 @@ import com.codeup.blog.daos.AdsRepository;
 import com.codeup.blog.daos.UsersRepository;
 import com.codeup.blog.models.Ad;
 import com.codeup.blog.models.User;
+import com.codeup.blog.services.EmailService;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +19,12 @@ public class AdsController {
     // dependency injection
     private AdsRepository adsDao;
     private UsersRepository usersDao;
+    private final EmailService emailService;
 
-    public AdsController(AdsRepository adsRepository, UsersRepository usersRepository){
-        adsDao = adsRepository;
-        usersDao = usersRepository;
+    public AdsController(AdsRepository adsRepository, UsersRepository usersRepository, EmailService emailService){
+        this.adsDao = adsRepository;
+        this.usersDao = usersRepository;
+        this.emailService = emailService;
     }
 
     @GetMapping("/ads")
@@ -52,6 +56,7 @@ public class AdsController {
 
         adToBeSaved.setOwner(currentUser);
         Ad savedAd = adsDao.save(adToBeSaved);
+        emailService.prepareAndSend(savedAd, "A new ad has been creating", "An ad has been created with the id of " + savedAd.getId());
         return "redirect:/ads/" + savedAd.getId();
     }
 
