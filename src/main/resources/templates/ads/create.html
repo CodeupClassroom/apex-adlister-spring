@@ -7,7 +7,7 @@
 <body>
 <nav th:replace="fragments/navbar :: navbar" />
 <div class="container">
-    <form action="/ads/create" th:method="post" th:object="${ad}">
+    <form th:action="@{/ads/create}" th:method="post" th:object="${ad}">
         Title:
         <input th:field="*{title}" />
         <br />

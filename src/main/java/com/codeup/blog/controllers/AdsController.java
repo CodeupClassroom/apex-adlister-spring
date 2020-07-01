@@ -4,6 +4,7 @@ import com.codeup.blog.daos.AdsRepository;
 import com.codeup.blog.daos.UsersRepository;
 import com.codeup.blog.models.Ad;
 import com.codeup.blog.models.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,8 @@ public class AdsController {
 
     @PostMapping("/ads/create")
     public String save(@ModelAttribute Ad adToBeSaved) {
-        User currentUser = usersDao.getOne(1L);
+        User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         adToBeSaved.setOwner(currentUser);
         Ad savedAd = adsDao.save(adToBeSaved);
         return "redirect:/ads/" + savedAd.getId();
