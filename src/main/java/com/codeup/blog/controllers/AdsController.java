@@ -5,6 +5,8 @@ import com.codeup.blog.daos.UsersRepository;
 import com.codeup.blog.models.Ad;
 import com.codeup.blog.models.User;
 import com.codeup.blog.services.EmailService;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,6 @@ public class AdsController {
     @GetMapping("/ads")
 //    @RequestMapping(value = "/ads", method = RequestMethod.GET)
     public String index(Model model){
-        
-        Ad firstAd = adsDao.findFirstByTitle("psvita");
-        System.out.println("firstAd.getId() = " + firstAd.getId());
-        
         List<Ad> adsList = adsDao.findAll();
         model.addAttribute("noAdsFound", adsList.size() == 0);
         model.addAttribute("ads", adsList);
@@ -54,7 +52,8 @@ public class AdsController {
 
     @PostMapping("/ads/create")
     public String save(@ModelAttribute Ad adToBeSaved) {
-        User currentUser = usersDao.getOne(1L);
+        User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         adToBeSaved.setOwner(currentUser);
         Ad savedAd = adsDao.save(adToBeSaved);
         emailService.prepareAndSend(savedAd, "A new ad has been creating", "An ad has been created with the id of " + savedAd.getId());
