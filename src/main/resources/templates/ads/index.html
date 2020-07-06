@@ -7,6 +7,7 @@
 <body>
     <nav th:replace="fragments/navbar :: navbar" />
     <div class="container">
+        <h3>Latest ads</h3>
         <div th:if="${noAdsFound}">
             No ads were found.
         </div>

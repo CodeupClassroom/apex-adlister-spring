@@ -14,4 +14,6 @@ public interface AdsRepository extends JpaRepository<Ad, Long> {
 
     // query methods
     Ad findFirstByTitle(String title); // select * from ads where title = ? limit 1
+
+    Ad findByTitle(String title);
 }
