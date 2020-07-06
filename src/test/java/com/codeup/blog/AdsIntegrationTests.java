@@ -2,6 +2,7 @@ package com.codeup.blog;
 
 import com.codeup.blog.daos.AdsRepository;
 import com.codeup.blog.daos.UsersRepository;
+import com.codeup.blog.models.Ad;
 import com.codeup.blog.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.HttpSession;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BlogApplication.class)
@@ -90,6 +92,31 @@ public class AdsIntegrationTests {
                         .param("title", "brand new mac")
                         .param("description", "best buy sale"))
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void testAdsIndex() throws Exception {
+        Ad existingAd = adsDao.findAll().get(0);
+
+        // Makes a Get request to /ads and verifies that we get some of the static text of the ads/index.html template and at least the title from the first Ad is present in the template.
+        this.mvc.perform(get("/ads"))
+                .andExpect(status().isOk())
+                // Test the static content of the page
+                .andExpect(content().string(containsString("Latest ads")))
+                // Test the dynamic content of the page
+                .andExpect(content().string(containsString(existingAd.getTitle())));
+    }
+
+    @Test
+    public void testShowAd() throws Exception {
+
+        Ad existingAd = adsDao.findAll().get(0);
+
+        // Makes a Get request to /ads/{id} and expect a redirection to the Ad show page
+        this.mvc.perform(get("/ads/" + existingAd.getId()))
+                .andExpect(status().isOk())
+                // Test the dynamic content of the page
+                .andExpect(content().string(containsString(existingAd.getDescription())));
     }
 
 }
