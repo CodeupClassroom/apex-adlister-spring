@@ -15,6 +15,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.util.HtmlUtils;
+import org.unbescape.html.HtmlEscape;
 
 import javax.servlet.http.HttpSession;
 
@@ -96,7 +98,7 @@ public class AdsIntegrationTests {
 
     @Test
     public void testAdsIndex() throws Exception {
-        Ad existingAd = adsDao.findAll().get(0);
+        Ad existingAd = adsDao.findByTitle("Fer's");
 
         // Makes a Get request to /ads and verifies that we get some of the static text of the ads/index.html template and at least the title from the first Ad is present in the template.
         this.mvc.perform(get("/ads"))
@@ -104,7 +106,7 @@ public class AdsIntegrationTests {
                 // Test the static content of the page
                 .andExpect(content().string(containsString("Latest ads")))
                 // Test the dynamic content of the page
-                .andExpect(content().string(containsString(existingAd.getTitle())));
+                .andExpect(content().string(containsString( HtmlUtils.htmlEscape(existingAd.getTitle()) )));
     }
 
     @Test
