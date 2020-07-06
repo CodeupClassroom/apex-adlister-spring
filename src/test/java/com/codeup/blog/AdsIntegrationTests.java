@@ -140,4 +140,25 @@ public class AdsIntegrationTests {
                 .andExpect(content().string(containsString("edited description")));
     }
 
+    @Test
+    public void testDeleteAd() throws Exception {
+        // Creates a test Ad to be deleted
+        this.mvc.perform(
+                post("/ads/create").with(csrf())
+                        .session((MockHttpSession) httpSession)
+                        .param("title", "ad to be deleted")
+                        .param("description", "won't last long"))
+                .andExpect(status().is3xxRedirection());
+
+        // Get the recent Ad that matches the title
+        Ad existingAd = adsDao.findByTitle("ad to be deleted");
+
+        // Makes a Post request to /ads/{id}/delete and expect a redirection to the Ads index
+        this.mvc.perform(
+                post("/ads/" + existingAd.getId() + "/delete").with(csrf())
+                        .session((MockHttpSession) httpSession)
+                        .param("id", String.valueOf(existingAd.getId())))
+                .andExpect(status().is3xxRedirection());
+    }
+
 }
