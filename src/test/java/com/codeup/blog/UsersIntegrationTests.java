@@ -47,7 +47,7 @@ public class UsersIntegrationTests {
     }
 
     @Test
-    public void testRegisterUser() throws Exception {
+    public void testRegisterUserFormView() throws Exception {
         this.mvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create an account")))
@@ -55,7 +55,7 @@ public class UsersIntegrationTests {
     }
 
     @Test
-    public void testCreateAd() throws Exception {
+    public void testRegisterUserFormSubmission() throws Exception {
         this.mvc.perform(
                 post("/sign-up").with(csrf())
                         .param("username", "test-user")
@@ -64,5 +64,7 @@ public class UsersIntegrationTests {
                 .andExpect(redirectedUrl("/login"))
                 .andExpect(status().isFound());
     }
+
+
 
 }
