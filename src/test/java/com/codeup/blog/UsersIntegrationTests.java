@@ -65,6 +65,22 @@ public class UsersIntegrationTests {
                 .andExpect(status().isFound());
     }
 
+    @Test
+    public void testLoginUserFormView() throws Exception {
+        this.mvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Log In")))
+                .andExpect(content().string(containsString("Password")));
+    }
 
+    @Test
+    public void testLoginUserFormSubmission() throws Exception {
+        this.mvc.perform(
+                post("/login").with(csrf())
+                        .param("username", "test-user")
+                        .param("password", "password"))
+                .andExpect(redirectedUrl("/ads"))
+                .andExpect(status().isFound());
+    }
 
 }
