@@ -54,4 +54,15 @@ public class UsersIntegrationTests {
                 .andExpect(content().string(containsString("Password")));
     }
 
+    @Test
+    public void testCreateAd() throws Exception {
+        this.mvc.perform(
+                post("/sign-up").with(csrf())
+                        .param("username", "test-user")
+                        .param("email", "test-mail@mail.com")
+                        .param("password", "password"))
+                .andExpect(redirectedUrl("/login"))
+                .andExpect(status().isFound());
+    }
+
 }
