@@ -1,26 +1,19 @@
 package com.codeup.blog;
 
-import com.codeup.blog.daos.AdsRepository;
 import com.codeup.blog.daos.UsersRepository;
-import com.codeup.blog.models.Ad;
-import com.codeup.blog.models.User;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.HtmlUtils;
-
-import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,10 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BlogApplication.class)
 @AutoConfigureMockMvc
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UsersIntegrationTests {
 
-    private User testUser;
-    private HttpSession httpSession;
+    String userTest = "test-user";
+    String userPass = "password";
 
     @Autowired
     private MockMvc mvc;
@@ -47,7 +41,7 @@ public class UsersIntegrationTests {
     }
 
     @Test
-    public void testRegisterUserFormView() throws Exception {
+    public void testARegisterUserFormView() throws Exception {
         this.mvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create an account")))
@@ -55,18 +49,18 @@ public class UsersIntegrationTests {
     }
 
     @Test
-    public void testRegisterUserFormSubmission() throws Exception {
+    public void testBRegisterUserFormSubmission() throws Exception {
         this.mvc.perform(
                 post("/sign-up").with(csrf())
-                        .param("username", "test-user")
+                        .param("username", userTest)
                         .param("email", "test-mail@mail.com")
-                        .param("password", "password"))
+                        .param("password", userPass))
                 .andExpect(redirectedUrl("/login"))
                 .andExpect(status().isFound());
     }
 
     @Test
-    public void testLoginUserFormView() throws Exception {
+    public void testCLoginUserFormView() throws Exception {
         this.mvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Log In")))
@@ -74,13 +68,21 @@ public class UsersIntegrationTests {
     }
 
     @Test
-    public void testLoginUserFormSubmission() throws Exception {
+    public void testDLoginUserFormSubmission() throws Exception {
         this.mvc.perform(
                 post("/login").with(csrf())
-                        .param("username", "test-user")
-                        .param("password", "password"))
+                        .param("username", userTest)
+                        .param("password", userPass))
                 .andExpect(redirectedUrl("/ads"))
                 .andExpect(status().isFound());
+        tearDown();
+    }
+
+    public void tearDown(){
+        System.out.println("after");
+        System.out.println("userDao.findByUsername(userTest).getId() = " + userDao.findByUsername(userTest).getId());
+        userDao.deleteById(userDao.findByUsername(userTest).getId());
+        System.out.println(userTest + " deleted");
     }
 
 }
